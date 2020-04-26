@@ -1,0 +1,9 @@
+{
+  "pandas_qa_test": {
+    "source_project": "dbk-minerva-cug01-dev",
+    "source_dataset": "banking_activities",
+    "source_tablename": "user_banking_activity",
+    "destination_dataset": "autotest_reports",
+    "destination_table": "trimming_testresult_table"
+  }
+}
