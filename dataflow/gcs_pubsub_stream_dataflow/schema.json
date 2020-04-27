@@ -1,0 +1,17 @@
+[
+  {
+    "mode": "REQUIRED",
+    "name": "eventtime",
+    "type": "TIMESTAMP"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "eventtext",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "eventint",
+    "type": "INT64"
+  }
+]
