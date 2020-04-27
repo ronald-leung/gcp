@@ -30,7 +30,10 @@ class StreamExampleDoFn(beam.DoFn):
 
     def pubsubJsonTransform(self, messageContent):
         print(messageContent)
-        return [json.loads(messageContent)]
+        # In Java there's an option for ignoring unknown values, but in Python not sure if there's a better way. In this example we will just pull the values we want to match the schema
+        jsonData = json.loads(messageContent)
+        jsonDest = {"eventtime":jsonData['eventtime'], "eventtext":jsonData['eventtext'], "eventint":jsonData['eventint']}
+        return [jsonDest]
 
     def process(self, element):
         """ Utility function to do any additional processing before writing the message into big query
