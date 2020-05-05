@@ -26,3 +26,7 @@ Here are the examples scenarios:
    - QA automation tests
       - Create a dag, that runs a BigQuery SQL command. Report success / failure based on test results
        
+       
+- Pubsub
+    - Simple python subscriber from Google's example. 
+        Note: Run it in IntelliJ debugger, all that's needed is the GOOGLE_APPLICATION_CREDENTIALS env variable
