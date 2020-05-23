@@ -30,9 +30,11 @@ class StreamExampleDoFn(beam.DoFn):
 
     def pubsubJsonTransform(self, messageContent):
         print(messageContent)
-        # In Java there's an option for ignoring unknown values, but in Python not sure if there's a better way. In this example we will just pull the values we want to match the schema
+        # In Java there's an option for ignoring unknown values, but in Python not sure if there's a better way. In
+        # this example we will just pull the values we want to match the schema
         jsonData = json.loads(messageContent)
-        jsonDest = {"eventtime":jsonData['eventtime'], "eventtext":jsonData['eventtext'], "eventint":jsonData['eventint']}
+        jsonDest = {"eventtime": jsonData['eventtime'], "eventtext": jsonData['eventtext'],
+                    "eventint": jsonData['eventint']}
         return [jsonDest]
 
     def process(self, element):
@@ -73,6 +75,7 @@ class StreamDataOptions(PipelineOptions):
         '--template_location=gs://dbk-login-log-anlysis-dataflow-qa/templates/stream_pubsub_example_template'
 '''
 
+
 def run(argv=None, save_main_session=True):
     parser = argparse.ArgumentParser()
     known_args, pipeline_args = parser.parse_known_args(argv)
@@ -81,12 +84,15 @@ def run(argv=None, save_main_session=True):
     p = beam.Pipeline(options=pipeline_options)
     user_options = pipeline_options.view_as(StreamDataOptions)
     print(user_options)
-    lines = p | 'Read From Pub sub' >> beam.io.ReadFromPubSub(subscription=user_options.dataSubscription).with_output_types(bytes)
+    lines = p | 'Read From Pub sub' >> beam.io.ReadFromPubSub(
+        subscription=user_options.dataSubscription).with_output_types(bytes)
     decode = lines | "Decode" >> beam.Map(lambda x: x.decode('utf-8'))
     jsonObj = decode | 'Get JSON' >> (beam.ParDo(StreamExampleDoFn()))
-    jsonObj | 'Write to Big Query' >> beam.io.WriteToBigQuery(user_options.bigQueryTableRef, write_disposition=BigQueryDisposition.WRITE_APPEND)
+    jsonObj | 'Write to Big Query' >> beam.io.WriteToBigQuery(user_options.bigQueryTableRef,
+                                                              write_disposition=BigQueryDisposition.WRITE_APPEND)
     result = p.run()
     result.wait_until_finish()
+
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
